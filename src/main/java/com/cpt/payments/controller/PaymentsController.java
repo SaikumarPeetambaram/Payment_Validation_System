@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpt.payments.constants.Endpoint;
+import com.cpt.payments.pojo.PaymentRequest;
+import com.cpt.payments.pojo.PaymentResponse;
 import com.cpt.payments.service.PaymentService;
 
 @RestController
@@ -19,7 +21,9 @@ public class PaymentsController {
 	private PaymentService paymentService;
 
 	@PostMapping(value = Endpoint.INITIATE_PAYMENT)
-	public ResponseEntity<String> sale(@RequestBody String paymentRequest) {
+	public ResponseEntity<PaymentResponse> sale(//TODO change String to actual Request structure
+			@RequestBody PaymentRequest paymentRequest) {
+		
 		/*
 		 * LogMessage.setLogMessagePrefix("/INITIATE_PAYMENT"); LogMessage.log(LOGGER,
 		 * " initiate payment request " + paymentRequest);
