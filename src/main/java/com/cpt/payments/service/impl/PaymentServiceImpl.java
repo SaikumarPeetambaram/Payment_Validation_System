@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -19,6 +21,8 @@ import com.cpt.payments.service.Validator;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 	
+	private static final Logger LOGGER = LogManager.getLogger(PaymentServiceImpl.class);
+	
 	@Autowired
 	private ApplicationContext context;
 	
@@ -29,7 +33,7 @@ public class PaymentServiceImpl implements PaymentService {
 	public PaymentResponse validateAndInitiatePayment(PaymentRequest paymentRequest) {
 		// TODO Auto-generated method stub
 		
-		System.out.println("Invoking service method - validateAndInitiatePayment || paymentRequest:" + paymentRequest + "|validationRules" + validationRules);
+		LOGGER.info("Invoking service method - validateAndInitiatePayment || paymentRequest:" + paymentRequest + "|validationRules" + validationRules);
 		
 		List<String> validatorList = Stream.of(validationRules.split(",")).collect(Collectors.toList());
 

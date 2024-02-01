@@ -1,5 +1,7 @@
 package com.cpt.payments.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import com.cpt.payments.service.PaymentService;
 @RequestMapping(Endpoint.VALIDATION_MAPPING)
 public class PaymentsController {
 	
+	private static final Logger LOGGER = LogManager.getLogger(PaymentsController.class);
+
 	@Autowired
 	private PaymentService paymentService;
 
@@ -24,14 +28,17 @@ public class PaymentsController {
 	public ResponseEntity<PaymentResponse> sale(//TODO change String to actual Request structure
 			@RequestBody PaymentRequest paymentRequest) {
 		
-		/*
-		 * LogMessage.setLogMessagePrefix("/INITIATE_PAYMENT"); LogMessage.log(LOGGER,
-		 * " initiate payment request " + paymentRequest);
-		 */
-		System.out.println("Invoking sale method");
-
-		return new ResponseEntity<>(
-				paymentService.validateAndInitiatePayment(paymentRequest), 
+		LOGGER.info("Initiate payment request {}", paymentRequest);
+		
+		PaymentResponse serviceResponse = paymentService.validateAndInitiatePayment(paymentRequest);
+		
+		ResponseEntity<PaymentResponse> paymentResponse = new ResponseEntity<>(
+				serviceResponse, 
 				HttpStatus.CREATED);
+		
+		LOGGER.info("Returning payment response {}", paymentResponse);
+		
+		return paymentResponse;
+
 	}
 }
