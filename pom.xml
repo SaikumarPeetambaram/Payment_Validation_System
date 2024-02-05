@@ -33,7 +33,7 @@
 			<properties>
 				<spring.profiles.active>local</spring.profiles.active>
 				<log4j2.path>
-					D:\\workspace\\ct-project\\10Sep\\logs\\payment-validation-service</log4j2.path>
+					E:\\Internship_Project_WorkSpace\\logs\\payment-validation-service</log4j2.path>
 			</properties>
 		</profile>
 		<profile>

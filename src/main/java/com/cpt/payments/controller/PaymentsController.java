@@ -28,7 +28,7 @@ public class PaymentsController {
 	public ResponseEntity<PaymentResponse> sale(//TODO change String to actual Request structure
 			@RequestBody PaymentRequest paymentRequest) {
 		
-		LOGGER.info("Initiate payment request {}", paymentRequest);
+		LOGGER.info("Initiate payment request:{}", paymentRequest);
 		
 		PaymentResponse serviceResponse = paymentService.validateAndInitiatePayment(paymentRequest);
 		
@@ -36,7 +36,7 @@ public class PaymentsController {
 				serviceResponse, 
 				HttpStatus.CREATED);
 		
-		LOGGER.info("Returning payment response {}", paymentResponse);
+		LOGGER.info("Returning payment response:{}", paymentResponse);
 		
 		return paymentResponse;
 
