@@ -25,27 +25,14 @@ public class ProviderIdValidatorTest {
 	
 	@Test
 	void testDoValidateInCorrectProviderID() {
-		//TODO write all testcase code.
-		//CODE which protects functional code
 		
 		PaymentRequest paymentRequest = new PaymentRequest();
-		Payment payment = new Payment();
-		payment.setAmount("18.00");
-		payment.setCreditorAccount("4242424242424242");
-		payment.setCurrency("EUR");
-		payment.setDebitorAccount("4111111111111111");
-		payment.setMerchantTransactionReference("cptraining_test201");
-		payment.setPaymentMethod("APM");
-		payment.setPaymentType("SALE");
+
+		Payment payment = TestDataProviderUtil.getTestPayment();
 		payment.setProviderId("Trustly-TEMP");
+		User user = TestDataProviderUtil.getTestUserBean();
 		
 		paymentRequest.setPayment(payment);
-		
-		User user = new User();
-		user.setEmail("johnpeter@gmail.com");
-		user.setFirstName("john");
-		user.setLastName("peter");
-		user.setPhoneNumber("+919393939393");
 		paymentRequest.setUser(user);
 		
 		ValidationException returnedException = assertThrows(ValidationException.class, 
@@ -66,27 +53,13 @@ public class ProviderIdValidatorTest {
 	
 	@Test
 	void testDoValidateValidProviderId() {
-		//TODO write all testcase code.
-		//CODE which protects functional code
 		
 		PaymentRequest paymentRequest = new PaymentRequest();
-		Payment payment = new Payment();
-		payment.setAmount("18.00");
-		payment.setCreditorAccount("4242424242424242");
-		payment.setCurrency("EUR");
-		payment.setDebitorAccount("4111111111111111");
-		payment.setMerchantTransactionReference("cptraining_test201");
-		payment.setPaymentMethod("APM");
-		payment.setPaymentType("SALE");
-		payment.setProviderId("Trustly");
+
+		Payment payment = TestDataProviderUtil.getTestPayment();
+		User user = TestDataProviderUtil.getTestUserBean();
 		
 		paymentRequest.setPayment(payment);
-		
-		User user = new User();
-		user.setEmail("johnpeter@gmail.com");
-		user.setFirstName("john");
-		user.setLastName("peter");
-		user.setPhoneNumber("+919393939393");
 		paymentRequest.setUser(user);
 		
 		assertDoesNotThrow(
@@ -109,6 +82,150 @@ public class ProviderIdValidatorTest {
 		assertDoesNotThrow(
 				() -> validator.doValidate(paymentRequest)
 		);
+	}
+	
+	@Test
+	void testDoValidatePamentRequestNull() {
+		PaymentRequest paymentRequest = null;
+		
+		ValidationException returnedException = assertThrows(ValidationException.class, 
+				() -> validator.doValidate(paymentRequest));
+		
+		assertEquals(
+				HttpStatus.BAD_REQUEST, 
+				returnedException.getHttpStatus());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorCode(), 
+				returnedException.getErrorCode());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorMessage(), 
+				returnedException.getErrorMessage());
+	}
+	
+	@Test
+	void testDoValidatePamentIsNull() {
+		PaymentRequest paymentRequest = new PaymentRequest();
+
+		Payment payment = null;
+		User user = TestDataProviderUtil.getTestUserBean();
+		
+		paymentRequest.setPayment(payment);
+		paymentRequest.setUser(user);
+		
+		ValidationException returnedException = assertThrows(ValidationException.class, 
+				() -> validator.doValidate(paymentRequest));
+		
+		assertEquals(
+				HttpStatus.BAD_REQUEST, 
+				returnedException.getHttpStatus());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorCode(), 
+				returnedException.getErrorCode());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorMessage(), 
+				returnedException.getErrorMessage());
+	}
+	
+	@Test
+	void testDoValidateProviderIdWithLeadTailSpace() {
+		
+		PaymentRequest paymentRequest = new PaymentRequest();
+
+		Payment payment = TestDataProviderUtil.getTestPayment();
+		payment.setProviderId("  Trustly  ");
+		User user = TestDataProviderUtil.getTestUserBean();
+		
+		paymentRequest.setPayment(payment);
+		paymentRequest.setUser(user);
+		
+		assertDoesNotThrow(
+				() -> validator.doValidate(paymentRequest)
+		);
+	}
+	
+	@Test
+	void testDoValidateNullProviderId() {
+		PaymentRequest paymentRequest = new PaymentRequest();
+
+		Payment payment = TestDataProviderUtil.getTestPayment();
+		payment.setProviderId(null);
+		User user = TestDataProviderUtil.getTestUserBean();
+		
+		paymentRequest.setPayment(payment);
+		paymentRequest.setUser(user);
+		
+		ValidationException returnedException = assertThrows(ValidationException.class, 
+				() -> validator.doValidate(paymentRequest));
+		
+		assertEquals(
+				HttpStatus.BAD_REQUEST, 
+				returnedException.getHttpStatus());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorCode(), 
+				returnedException.getErrorCode());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorMessage(), 
+				returnedException.getErrorMessage());
+	}
+	
+	@Test
+	void testDoValidateEmptyProviderId() {
+		PaymentRequest paymentRequest = new PaymentRequest();
+
+		Payment payment = TestDataProviderUtil.getTestPayment();
+		payment.setProviderId("");
+		User user = TestDataProviderUtil.getTestUserBean();
+		
+		paymentRequest.setPayment(payment);
+		paymentRequest.setUser(user);
+		
+		ValidationException returnedException = assertThrows(ValidationException.class, 
+				() -> validator.doValidate(paymentRequest));
+		
+		assertEquals(
+				HttpStatus.BAD_REQUEST, 
+				returnedException.getHttpStatus());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorCode(), 
+				returnedException.getErrorCode());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorMessage(), 
+				returnedException.getErrorMessage());
+	}
+	
+	@Test
+	void testDoValidateBlankProviderId() {
+		PaymentRequest paymentRequest = new PaymentRequest();
+
+		Payment payment = TestDataProviderUtil.getTestPayment();
+		payment.setProviderId("      ");
+		User user = TestDataProviderUtil.getTestUserBean();
+		
+		paymentRequest.setPayment(payment);
+		paymentRequest.setUser(user);
+		
+		ValidationException returnedException = assertThrows(ValidationException.class, 
+				() -> validator.doValidate(paymentRequest));
+		
+		assertEquals(
+				HttpStatus.BAD_REQUEST, 
+				returnedException.getHttpStatus());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorCode(), 
+				returnedException.getErrorCode());
+		
+		assertEquals(
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorMessage(), 
+				returnedException.getErrorMessage());
 	}
 
 }
