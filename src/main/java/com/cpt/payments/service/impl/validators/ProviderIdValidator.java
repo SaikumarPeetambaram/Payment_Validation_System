@@ -21,20 +21,25 @@ public class ProviderIdValidator implements Validator{
 		LOGGER.info("Validating paymentRequest:{}", paymentRequest);
 		// TODO Auto-generated method stub
 		
-		String providerId = paymentRequest.getPayment()
-				.getProviderId().trim();
-		if(!providerId.equalsIgnoreCase("Trustly")) {
-			//TODO raise an exception
-			LOGGER.warn("ProviderIdValidator is NOT VALID");
-			
-			throw new ValidationException(HttpStatus.BAD_REQUEST,
-					ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorCode(),
-					ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorMessage());
-			
+		if(paymentRequest != null
+				&& paymentRequest.getPayment() != null
+				&& paymentRequest.getPayment().getProviderId() != null) {
+			//trimmed providerid value
+			String providerId = paymentRequest.getPayment()
+					.getProviderId().trim();
+			if(providerId.equalsIgnoreCase("Trustly")) {
+				//Request is valid
+				LOGGER.info("providerid Valid");
+				return;
+			}else {
+				LOGGER.info("Payment ProviderId is not Trustly providerId:{}", providerId);
+			}
 		}else {
-			LOGGER.info("ProviderIdValidator is VALID");
+			LOGGER.info("Payment ProviderId is Null - INVALID");
 		}
-		
+		LOGGER.info("Payment ProviderId is INVALID, throwing exception");
+		throw new ValidationException(HttpStatus.BAD_REQUEST,
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorCode(),
+				ErrorCodeEnum.PROVIDER_ID_VALIDATION_FAILED.getErrorMessage());
 	}
-
 }
