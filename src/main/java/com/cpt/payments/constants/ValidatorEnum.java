@@ -1,12 +1,14 @@
 package com.cpt.payments.constants;
 
 import com.cpt.payments.service.Validator;
+import com.cpt.payments.service.impl.validators.PaymentTypeValidator;
 import com.cpt.payments.service.impl.validators.ProviderIdValidator;
 
 import lombok.Getter;
 
 public enum ValidatorEnum {
 	
+	PAYMENT_TYPE_FILTER("PAYMENT_TYPE_FILTER", PaymentTypeValidator.class),
 	PROVIDER_ID_FILTER("PROVIDER_ID_FILTER", ProviderIdValidator.class);
 	
 	@Getter
