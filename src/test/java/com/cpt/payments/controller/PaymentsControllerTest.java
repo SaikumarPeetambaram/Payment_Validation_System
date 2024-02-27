@@ -17,14 +17,23 @@ import com.cpt.payments.pojo.Payment;
 import com.cpt.payments.pojo.PaymentRequest;
 import com.cpt.payments.pojo.PaymentResponse;
 import com.cpt.payments.pojo.User;
+import com.cpt.payments.service.HmacSha256Provider;
 import com.cpt.payments.service.PaymentService;
 import com.cpt.payments.utils.TestDataProviderUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @ExtendWith(MockitoExtension.class)
 public class PaymentsControllerTest {
 
 	@Mock
 	private PaymentService paymentService;
+	
+	@Mock
+	private HttpServletRequest httpRequest;
+	
+	@Mock
+	private HmacSha256Provider hmacSha256Provider;
 	
 	@InjectMocks
 	PaymentsController controller;
@@ -47,7 +56,7 @@ public class PaymentsControllerTest {
 		when(paymentService.validateAndInitiatePayment(any()))
 		.thenReturn(paymentResponse);
 		
-		ResponseEntity<PaymentResponse> saleResponse = controller.sale(paymentRequest);
+		ResponseEntity<PaymentResponse> saleResponse = controller.sale(paymentRequest, httpRequest);
 		
 		assertNotNull(saleResponse);
 		assertNotNull(saleResponse.getBody());
