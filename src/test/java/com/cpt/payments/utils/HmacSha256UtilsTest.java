@@ -32,8 +32,21 @@ public class HmacSha256UtilsTest {
 		
 		PaymentRequest paymentRequest = new PaymentRequest();
 
-		Payment payment = TestDataProviderUtil.getTestPayment();
-		User user = TestDataProviderUtil.getTestUserBean();
+		User user = new User();
+		user.setEmail("johnpeter@gmail.com");
+		user.setFirstName("john");
+		user.setLastName("peter");
+		user.setPhoneNumber("9393939393");
+
+		Payment payment = new Payment();
+		payment.setAmount("18.0");
+		payment.setCreditorAccount("4242424242424242");
+		payment.setCurrency("EUR");
+		payment.setDebitorAccount("4111111111111111");
+		payment.setMerchantTransactionReference("cptraining_test3");
+		payment.setPaymentMethod("APM");
+		payment.setPaymentType("SALE-NEW");
+		payment.setProviderId("TRUSTLY");
 		
 		paymentRequest.setPayment(payment);
 		paymentRequest.setUser(user);
@@ -44,7 +57,7 @@ public class HmacSha256UtilsTest {
 		
 		//Invoke the method
 		String generatedSignature = hmacSha256Utils.calculateHmac(secretKey, requestData);
-		LOGGER.info("generatedSignature: {}", generatedSignature);
+		LOGGER.info("|REFER|generatedSignature: {}", generatedSignature);
 		
 		
 		//verify what you expect to happen from method

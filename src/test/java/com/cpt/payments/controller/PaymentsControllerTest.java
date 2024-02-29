@@ -56,7 +56,7 @@ public class PaymentsControllerTest {
 		when(paymentService.validateAndInitiatePayment(any()))
 		.thenReturn(paymentResponse);
 		
-		ResponseEntity<PaymentResponse> saleResponse = controller.sale(paymentRequest, httpRequest);
+		ResponseEntity<PaymentResponse> saleResponse = controller.sale(paymentRequest);
 		
 		assertNotNull(saleResponse);
 		assertNotNull(saleResponse.getBody());

@@ -14,15 +14,6 @@ public class TestDataProviderUtil {
         return user;
     }
 
-    public static User getTestUserDto() {
-        User user = new User();
-        user.setEmail("johnpeter@gmail.com");
-        user.setFirstName("john");
-        user.setLastName("peter");
-        user.setPhoneNumber("9393939393");
-        return user;
-    }
-
     public static Payment getTestPayment() {
         Payment payment = new Payment();
         payment.setAmount("18.0");
