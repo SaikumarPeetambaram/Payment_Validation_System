@@ -36,22 +36,14 @@ public class PaymentsController {
 
 	@PostMapping(value = Endpoint.INITIATE_PAYMENT)
 	public ResponseEntity<PaymentResponse> sale(//TODO change String to actual Request structure
-			@RequestBody PaymentRequest paymentRequest,
-			HttpServletRequest request) {
-		
-		String requestSignature = request.getHeader("signature");
+			@RequestBody PaymentRequest paymentRequest) {
 		
 		//@RequestHeader("signature") String requestSignature;
 		
-		LOGGER.info("Initiate paymentRequest:{}|requestSignature:{}", 
-				paymentRequest, requestSignature);
+		LOGGER.info("Initiate paymentRequest:{}", 
+				paymentRequest);
 		
-		Gson gson = new Gson();
-		String requestDataAsJson = gson.toJson(paymentRequest);
-			
-		checkSigAndExistWhenInvalid(requestSignature, requestDataAsJson);
 		
-		LOGGER.warn("SIGNATURE VALID, continue processing the payment");
 		PaymentResponse serviceResponse = paymentService.validateAndInitiatePayment(paymentRequest);
 		
 		ResponseEntity<PaymentResponse> paymentResponse = new ResponseEntity<>(
