@@ -9,7 +9,9 @@ public enum ErrorCodeEnum {
 	PAYMENT_TYPE_VALIDATION_FAILED("10012","Bad request, given paymentType parameter is not valid or empty"),
 	PROVIDER_ID_VALIDATION_FAILED("10017","Bad request, given proiderId parameter is not valid or empty"),
 	SIGNATURE_EMPTY("10018","Bad request, Signature is empty"),
-	SIGNATURE_INVALID("10019","Bad request, Signature is not valid");
+	SIGNATURE_INVALID("10019","Bad request, Signature is not valid"),
+	DUPLICATE_TRANSACTION("10020","Bad request, duplicate merchantTransactionReference"),
+;
 	
 	@Getter
 	private String errorCode;

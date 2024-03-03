@@ -1,6 +1,7 @@
 package com.cpt.payments.constants;
 
 import com.cpt.payments.service.Validator;
+import com.cpt.payments.service.impl.validators.DuplicationTransactionValidator;
 import com.cpt.payments.service.impl.validators.PaymentMethodValidator;
 import com.cpt.payments.service.impl.validators.PaymentTypeValidator;
 import com.cpt.payments.service.impl.validators.ProviderIdValidator;
@@ -11,7 +12,8 @@ public enum ValidatorEnum {
 	
 	PAYMENT_METHOD_FILTER("PAYMENT_METHOD_FILTER", PaymentMethodValidator.class),
 	PAYMENT_TYPE_FILTER("PAYMENT_TYPE_FILTER", PaymentTypeValidator.class),
-	PROVIDER_ID_FILTER("PROVIDER_ID_FILTER", ProviderIdValidator.class);
+	PROVIDER_ID_FILTER("PROVIDER_ID_FILTER", ProviderIdValidator.class),
+	DUPLICATE_TXN_FILTER("DUPLICATE_TXN_FILTER", DuplicationTransactionValidator.class);
 	
 	@Getter
 	private String validatorName;
