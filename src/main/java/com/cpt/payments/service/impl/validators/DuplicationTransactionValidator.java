@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 @Component
 public class DuplicationTransactionValidator implements Validator {
 	
-private static final Logger LOGGER = LogManager.getLogger(DuplicationTransactionValidator.class);
+	private static final Logger LOGGER = LogManager.getLogger(DuplicationTransactionValidator.class);
 	
 	@Autowired
 	private MerchantPaymentRequestDao merchantPaymentRequestDao;
@@ -56,7 +56,7 @@ private static final Logger LOGGER = LogManager.getLogger(DuplicationTransaction
 			Gson gson = new Gson();
 			merchantPaymentRequest = MerchantPaymentRequest.builder()
 					.merchantTransactionReference(merchantTransactionId)
-					.email(merchantTransactionId)
+					.email(email)
 					.transactionRequest(gson.toJson(paymentRequest))
 					.build();
 			LOGGER.info( " prepared merchantPaymentRequest is  -> "+merchantPaymentRequest);

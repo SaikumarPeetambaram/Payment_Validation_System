@@ -1,6 +1,5 @@
 package com.cpt.payments.security;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +15,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 public class HmacFilter extends OncePerRequestFilter {
 	private static final Logger LOGGER = LogManager.getLogger(HmacFilter.class);
 
@@ -25,20 +23,33 @@ public class HmacFilter extends OncePerRequestFilter {
 	public HmacFilter(HmacSha256Provider hmacSha256Provider) {
 		this.hmacSha256Provider = hmacSha256Provider;
 	}
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest servletRequest, HttpServletResponse servletResponse,
 			FilterChain filterChain) throws ServletException, IOException {
 		LOGGER.info(">> in HmacFilter ");
+		
+		//Read requestURI. And if it starts with "/payments"
+		//then run the below logic
+		
+		if(!servletRequest.getRequestURI().startsWith("/payments")) {
+			
+			filterChain.doFilter(servletRequest, servletResponse);
+			LOGGER.info(">> in HmacFilter after calls");
+			
+			return;
+		}
 
 		String requestSignature = servletRequest.getHeader("signature");
 		
 		WrappedRequest wrappedRequest = new WrappedRequest(servletRequest);
 		String requestDataAsJson = wrappedRequest.getBody().replaceAll("\\s", "");
 
-		/*//reads request body from HttpServletRequest StringBuilder request
-		 * StringBuilder requestBody = new StringBuilder(); BufferedReader reader =
-		 * servletRequest.getReader(); String line; while ((line = reader.readLine()) !=
-		 * null) { requestBody.append(line); } reader.close();
+		/*
+		 * //Reads request body from HttpServletRequest StringBuilder requestBody = new
+		 * StringBuilder(); BufferedReader reader = servletRequest.getReader(); String
+		 * line; while ((line = reader.readLine()) != null) { requestBody.append(line);
+		 * } reader.close();
 		 */
 		
 		//String requestDataAsJson = requestBody.toString().replaceAll("\\s", "");

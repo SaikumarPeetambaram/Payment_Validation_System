@@ -28,9 +28,13 @@ public class SecurityConfiguration {
 	    .authorizeHttpRequests(
 	    		authorize -> 
 	    		authorize
+	    		.requestMatchers("/redis/**").permitAll()
 	    		.anyRequest().authenticated())
+	    		
 	    .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
+	    //TODO this is temporary change only for testing
 	    .addFilterAfter(new HmacFilter(hmacSha256Provider), UsernamePasswordAuthenticationFilter.class)
+	    
 	    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		
 		return http.build();

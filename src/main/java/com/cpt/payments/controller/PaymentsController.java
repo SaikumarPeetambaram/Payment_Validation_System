@@ -15,15 +15,13 @@ import com.cpt.payments.pojo.PaymentRequest;
 import com.cpt.payments.pojo.PaymentResponse;
 import com.cpt.payments.service.HmacSha256Provider;
 import com.cpt.payments.service.PaymentService;
-import com.cpt.payments.service.impl.HmacSha256ProviderImpl;
-import com.google.gson.Gson;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(Endpoint.VALIDATION_MAPPING)
 public class PaymentsController {
-	
+
 	private static final Logger LOGGER = LogManager.getLogger(PaymentsController.class);
 
 	@Autowired
@@ -32,44 +30,39 @@ public class PaymentsController {
 	@Autowired
 	private HmacSha256Provider hmacSha256Provider;
 
-	
-
 	@PostMapping(value = Endpoint.INITIATE_PAYMENT)
-	public ResponseEntity<PaymentResponse> sale(//TODO change String to actual Request structure
+	public ResponseEntity<PaymentResponse> sale(
 			@RequestBody PaymentRequest paymentRequest) {
-		
-		//@RequestHeader("signature") String requestSignature;
-		
+
 		LOGGER.info("Initiate paymentRequest:{}", 
 				paymentRequest);
-		
-		
+
 		PaymentResponse serviceResponse = paymentService.validateAndInitiatePayment(paymentRequest);
 		
 		ResponseEntity<PaymentResponse> paymentResponse = new ResponseEntity<>(
 				serviceResponse, 
 				HttpStatus.CREATED);
 		
-		LOGGER.info("Returning payment response:{}", paymentResponse);
+		LOGGER.info("Returning payment response {}", paymentResponse);
 		
 		return paymentResponse;
-
 	}
 	
 	@PostMapping(value = Endpoint.PROCESS_PAYMENT)
-	public String processPayment(//TODO change String to actual Request structure
+	public String processPayment(
 			@RequestBody PaymentRequest paymentRequest,
 			HttpServletRequest request) {
-		
+
 		LOGGER.info("Invoking processPayment paymentRequest:{}", 
 				paymentRequest);
 		
-		return "Invoke processPayment method";
+		return "Invoked processPayment method";
+	}
+	
 
+	private void checkSigAndExitWhenInvalid(String requestSignature, String requestDataAsJson) {
+		hmacSha256Provider.isSigValid(
+				requestDataAsJson, requestSignature);
 	}
 
-
-	private void checkSigAndExistWhenInvalid(String requestSignature, String requestDataAsJson) {
-		hmacSha256Provider.isSigValid(requestDataAsJson, requestSignature);
-	}
 }

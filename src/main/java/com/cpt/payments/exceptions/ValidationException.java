@@ -2,9 +2,13 @@ package com.cpt.payments.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class ValidationException extends RuntimeException {
 	private static final long serialVersionUID = -2171272011475853092L;
 	private HttpStatus httpStatus;

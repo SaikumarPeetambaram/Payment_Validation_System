@@ -43,9 +43,9 @@ public class HmacSha256UtilsTest {
 		payment.setCreditorAccount("4242424242424242");
 		payment.setCurrency("EUR");
 		payment.setDebitorAccount("4111111111111111");
-		payment.setMerchantTransactionReference("cptraining_test3");
+		payment.setMerchantTransactionReference("cptraining_test1");
 		payment.setPaymentMethod("APM");
-		payment.setPaymentType("SALE-NEW");
+		payment.setPaymentType("SALE");
 		payment.setProviderId("TRUSTLY");
 		
 		paymentRequest.setPayment(payment);
